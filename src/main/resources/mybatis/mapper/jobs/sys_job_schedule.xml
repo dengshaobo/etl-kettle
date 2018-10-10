@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.khsh.etl.mapper.SysJobScheduleDao">
+
+	<sql id="SqlWhere">
+		<where>
+			1=1
+			<if test="id!=null ">and id=#{id} </if>
+			<if test="jobId!=null and jobId!='' ">and job_id=#{jobId} </if>
+			<if test="jobName!=null and jobName!='' ">and job_name=#{jobName} </if>
+			<if test="jobNameEn!=null and jobNameEn!='' ">and job_name_en=#{jobNameEn} </if>
+			<if test="jobGroup!=null and jobGroup!='' ">and job_group=#{jobGroup} </if>
+			<if test="jobClazz!=null and jobClazz!='' ">and job_clazz=#{jobClazz} </if>
+			<if test="jobTrigger!=null and jobTrigger!='' ">and job_trigger=#{jobTrigger} </if>
+			<if test="jobCron!=null and jobCron!='' ">and job_cron=#{jobCron} </if>
+			<if test="jobPriority!=null and jobPriority!='' ">and job_priority=#{jobPriority} </if>
+			<if test="jobState!=null and jobState!='' ">and job_state=#{jobState} </if>
+			<if test="isTask!=null and isTask!='' ">and is_task=#{isTask} </if>
+			<if test="lastDo!=null and lastDo!='' ">and last_do=#{lastDo} </if>
+			<if test="status!=null and status!='' ">and status=#{status} </if>
+			<if test="showOrder!=null and showOrder!='' ">and show_order=#{showOrder} </if>
+			<if test="paramName!=null and paramName!='' ">and param_name=#{paramName} </if>
+			<if test="paramType!=null and paramType!='' ">and param_type=#{paramType} </if>
+			<if test="paramClazz!=null and paramClazz!='' ">and param_clazz=#{paramClazz} </if>
+			<if test="paramValue!=null and paramValue!='' ">and param_value=#{paramValue} </if>
+			<if test="remark!=null and remark!='' ">and remark=#{remark} </if>
+			<if test="modifyTime!=null and modifyTime!='' ">and modify_time=#{modifyTime} </if>
+			<if test="modifyUser!=null and modifyUser!='' ">and modify_user=#{modifyUser} </if>
+			<if test="ext!=null and ext!='' ">and ext=#{ext} </if>
+			<if test="ext1!=null and ext1!='' ">and ext1=#{ext1} </if>
+			<if test="ext2!=null and ext2!='' ">and ext2=#{ext2} </if>
+		</where>
+	</sql>
+	<sql id="SqlWherePK">
+		<where>
+			1=1
+			<if test="id!=null ">and id=#{id} </if>
+		</where>
+	</sql>
+	<sql id="SqlSet">
+		<set>
+			<if test="id!=null "> id=#{id}, </if>
+			<if test="jobId!=null and jobId!='' "> job_id=#{jobId}, </if>
+			<if test="jobName!=null and jobName!='' "> job_name=#{jobName}, </if>
+			<if test="jobNameEn!=null and jobNameEn!='' "> job_name_en=#{jobNameEn}, </if>
+			<if test="jobGroup!=null and jobGroup!='' "> job_group=#{jobGroup}, </if>
+			<if test="jobClazz!=null and jobClazz!='' "> job_clazz=#{jobClazz}, </if>
+			<if test="jobTrigger!=null and jobTrigger!='' "> job_trigger=#{jobTrigger}, </if>
+			<if test="jobCron!=null and jobCron!='' "> job_cron=#{jobCron}, </if>
+			<if test="jobPriority!=null and jobPriority!='' "> job_priority=#{jobPriority}, </if>
+			<if test="jobState!=null and jobState!='' "> job_state=#{jobState}, </if>
+			<if test="isTask!=null and isTask!='' "> is_task=#{isTask}, </if>
+			<if test="lastDo!=null and lastDo!='' "> last_do=#{lastDo}, </if>
+			<if test="status!=null and status!='' "> status=#{status}, </if>
+			<if test="showOrder!=null and showOrder!='' "> show_order=#{showOrder}, </if>
+			<if test="paramName!=null and paramName!='' "> param_name=#{paramName}, </if>
+			<if test="paramType!=null and paramType!='' "> param_type=#{paramType}, </if>
+			<if test="paramClazz!=null and paramClazz!='' "> param_clazz=#{paramClazz}, </if>
+			<if test="paramValue!=null and paramValue!='' "> param_value=#{paramValue}, </if>
+			<if test="remark!=null and remark!='' "> remark=#{remark}, </if>
+			<if test="modifyTime!=null and modifyTime!='' "> modify_time=#{modifyTime}, </if>
+			<if test="modifyUser!=null and modifyUser!='' "> modify_user=#{modifyUser}, </if>
+			<if test="ext!=null and ext!='' "> ext=#{ext}, </if>
+			<if test="ext1!=null and ext1!='' "> ext1=#{ext1}, </if>
+			<if test="ext2!=null and ext2!='' "> ext2=#{ext2}, </if>
+		</set>
+	</sql>
+
+
+	<insert  id="insertAutoKey" parameterType="com.khsh.etl.model.SysJobScheduleModel" useGeneratedKeys="true" keyProperty="id" >
+		 INSERT INTO sys_job_schedule (
+ 			job_id, job_name, job_name_en, job_group, 
+ 			job_clazz, job_trigger, job_cron, job_priority, job_state, 
+ 			is_task, last_do, status, show_order, param_name, 
+ 			param_type, param_clazz, param_value, remark, modify_time, 
+ 			modify_user, ext, ext1, ext2 ) 	 VALUES ( 
+ 			#{jobId}, #{jobName}, #{jobNameEn}, #{jobGroup}, 
+ 			#{jobClazz}, #{jobTrigger}, #{jobCron}, #{jobPriority}, #{jobState}, 
+ 			#{isTask}, #{lastDo}, #{status}, #{showOrder}, #{paramName}, 
+ 			#{paramType}, #{paramClazz}, #{paramValue}, #{remark}, #{modifyTime}, 
+ 			#{modifyUser}, #{ext}, #{ext1}, #{ext2} ) 
+	</insert>
+
+	<insert  id="insertSingle" parameterType="com.khsh.etl.model.SysJobScheduleModel" useGeneratedKeys="true" keyProperty="id" >
+		 INSERT INTO sys_job_schedule (
+ 			job_id, job_name, job_name_en, job_group, 
+ 			job_clazz, job_trigger, job_cron, job_priority, job_state, 
+ 			is_task, last_do, status, show_order, param_name, 
+ 			param_type, param_clazz, param_value, remark, modify_time, 
+ 			modify_user, ext, ext1, ext2,  id ) 
+		 VALUES( 
+ 			#{jobId}, #{jobName}, #{jobNameEn}, #{jobGroup}, 
+ 			#{jobClazz}, #{jobTrigger}, #{jobCron}, #{jobPriority}, #{jobState}, 
+ 			#{isTask}, #{lastDo}, #{status}, #{showOrder}, #{paramName}, 
+ 			#{paramType}, #{paramClazz}, #{paramValue}, #{remark}, #{modifyTime}, 
+ 			#{modifyUser}, #{ext}, #{ext1}, #{ext2},  #{id} ) 
+	</insert>
+
+	<delete  id="delete" parameterType="com.khsh.etl.model.SysJobScheduleModel" >
+		 DELETE FROM sys_job_schedule
+		 <include refid="SqlWhere"></include> 
+	</delete>
+
+	<update  id="update" parameterType="com.khsh.etl.model.SysJobScheduleModel" >
+		 UPDATE sys_job_schedule
+		 <include refid="SqlSet"></include> 
+		 <include refid="SqlWherePK"></include> 
+	</update>
+
+	<select  id="findByPK" parameterType="com.khsh.etl.model.SysJobScheduleModel" resultType="com.khsh.etl.model.SysJobScheduleModel" >
+		 SELECT * FROM sys_job_schedule
+		 <include refid="SqlWhere"></include> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryByCond" parameterType="com.khsh.etl.model.SysJobScheduleModel" resultType="com.khsh.etl.model.SysJobScheduleModel" >
+		 SELECT * FROM sys_job_schedule
+		 <include refid="SqlWhere"></include> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryTree" parameterType="com.khsh.etl.model.SysJobScheduleModel" resultType="com.khsh.etl.model.SysJobScheduleModel" >
+		 SELECT * FROM sys_job_schedule
+		 <include refid="SqlWhere"></include> 
+		 <if test=" extSQL !=null "> ${extSQL} </if> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryByPage" parameterType="com.khsh.etl.model.SysJobScheduleModel" resultType="com.khsh.etl.model.SysJobScheduleModel" >
+		 SELECT * FROM sys_job_schedule
+		 <include refid="SqlWhere"></include> 
+		 <if test="extSQL!=null "> ${extSQL} </if> 
+	</select>
+
+	<select  id="findMaxId" parameterType="com.khsh.etl.model.SysJobScheduleModel" resultType="int" >
+		 SELECT max(id) FROM sys_job_schedule
+		 <include refid="SqlWhere"></include> 
+	</select>
+
+</mapper>

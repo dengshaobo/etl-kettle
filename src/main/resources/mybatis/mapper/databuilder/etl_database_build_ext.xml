@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.khsh.etl.mapper.EtlDatabaseBuildExtDao">
+
+	<sql id="SqlWhere">
+		<where>
+			1=1
+			<if test="id!=null ">and id=#{id} </if>
+			<if test="buildUuid!=null and buildUuid!='' ">and build_uuid=#{buildUuid} </if>
+			<if test="columnName!=null and columnName!='' ">and column_name=#{columnName} </if>
+			<if test="columnType!=null and columnType!='' ">and column_type=#{columnType} </if>
+			<if test="columnLength!=null ">and column_length=#{columnLength} </if>
+			<if test="columnScale!=null ">and column_scale=#{columnScale} </if>
+			<if test="status!=null and status!='' ">and status=#{status} </if>
+			<if test="remark!=null and remark!='' ">and remark=#{remark} </if>
+			<if test="modifyTime!=null and modifyTime!='' ">and modify_time=#{modifyTime} </if>
+			<if test="modifyUser!=null and modifyUser!='' ">and modify_user=#{modifyUser} </if>
+			<if test="ext!=null and ext!='' ">and ext=#{ext} </if>
+			<if test="ext1!=null and ext1!='' ">and ext1=#{ext1} </if>
+			<if test="ext2!=null and ext2!='' ">and ext2=#{ext2} </if>
+		</where>
+	</sql>
+	<sql id="SqlWherePK">
+		<where>
+			1=1
+			<if test="id!=null ">and id=#{id} </if>
+            <if test="uuid!=null and uuid!='' ">and uuid=#{uuid} </if>
+		</where>
+	</sql>
+	<sql id="SqlSet">
+		<set>
+			<if test="id!=null "> id=#{id}, </if>
+			<if test="buildUuid!=null and buildUuid!='' "> build_uuid=#{buildUuid}, </if>
+			<if test="columnName!=null and columnName!='' "> column_name=#{columnName}, </if>
+			<if test="columnType!=null and columnType!='' "> column_type=#{columnType}, </if>
+			<if test="columnLength!=null "> column_length=#{columnLength}, </if>
+			<if test="columnScale!=null "> column_scale=#{columnScale}, </if>
+			<if test="status!=null and status!='' "> status=#{status}, </if>
+			<if test="remark!=null and remark!='' "> remark=#{remark}, </if>
+			<if test="modifyTime!=null and modifyTime!='' "> modify_time=#{modifyTime}, </if>
+			<if test="modifyUser!=null and modifyUser!='' "> modify_user=#{modifyUser}, </if>
+			<if test="ext!=null and ext!='' "> ext=#{ext}, </if>
+			<if test="ext1!=null and ext1!='' "> ext1=#{ext1}, </if>
+			<if test="ext2!=null and ext2!='' "> ext2=#{ext2}, </if>
+		</set>
+	</sql>
+
+
+	<insert  id="insertAutoKey" parameterType="com.khsh.etl.model.EtlDatabaseBuildExtModel" useGeneratedKeys="true" keyProperty="id" >
+		 INSERT INTO etl_database_build_ext (
+ 			build_uuid, column_name, column_type, column_length, 
+ 			column_scale, status, remark, modify_time, modify_user, 
+ 			ext, ext1, ext2 ) 	 VALUES ( 
+ 			#{buildUuid}, #{columnName}, #{columnType}, #{columnLength}, 
+ 			#{columnScale}, #{status}, #{remark}, #{modifyTime}, #{modifyUser}, 
+ 			#{ext}, #{ext1}, #{ext2} ) 
+	</insert>
+
+	<insert  id="insertSingle" parameterType="com.khsh.etl.model.EtlDatabaseBuildExtModel" useGeneratedKeys="true" keyProperty="id" >
+		 INSERT INTO etl_database_build_ext (
+ 			build_uuid, column_name, column_type, column_length, 
+ 			column_scale, status, remark, modify_time, modify_user, 
+ 			ext, ext1, ext2,  id ) 
+		 VALUES( 
+ 			#{buildUuid}, #{columnName}, #{columnType}, #{columnLength}, 
+ 			#{columnScale}, #{status}, #{remark}, #{modifyTime}, #{modifyUser}, 
+ 			#{ext}, #{ext1}, #{ext2},  #{id} ) 
+	</insert>
+
+	<delete  id="delete" parameterType="com.khsh.etl.model.EtlDatabaseBuildExtModel" >
+		 DELETE FROM etl_database_build_ext
+		 <include refid="SqlWhere"></include> 
+	</delete>
+
+	<update  id="update" parameterType="com.khsh.etl.model.EtlDatabaseBuildExtModel" >
+		 UPDATE etl_database_build_ext
+		 <include refid="SqlSet"></include> 
+		 <include refid="SqlWherePK"></include> 
+	</update>
+
+	<select  id="findByPK" parameterType="com.khsh.etl.model.EtlDatabaseBuildExtModel" resultType="com.khsh.etl.model.EtlDatabaseBuildExtModel" >
+		 SELECT * FROM etl_database_build_ext
+		 <include refid="SqlWhere"></include> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryByCond" parameterType="com.khsh.etl.model.EtlDatabaseBuildExtModel" resultType="com.khsh.etl.model.EtlDatabaseBuildExtModel" >
+		 SELECT * FROM etl_database_build_ext
+		 <include refid="SqlWhere"></include> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryTree" parameterType="com.khsh.etl.model.EtlDatabaseBuildExtModel" resultType="com.khsh.etl.model.EtlDatabaseBuildExtModel" >
+		 SELECT * FROM etl_database_build_ext
+		 <include refid="SqlWhere"></include> 
+		 <if test=" extSQL !=null "> ${extSQL} </if> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryByPage" parameterType="com.khsh.etl.model.EtlDatabaseBuildExtModel" resultType="com.khsh.etl.model.EtlDatabaseBuildExtModel" >
+		 SELECT * FROM etl_database_build_ext
+		 <include refid="SqlWhere"></include> 
+		 <if test="extSQL!=null "> ${extSQL} </if> 
+	</select>
+
+	<select  id="findMaxId" parameterType="com.khsh.etl.model.EtlDatabaseBuildExtModel" resultType="int" >
+		 SELECT max(id) FROM etl_database_build_ext
+		 <include refid="SqlWhere"></include> 
+	</select>
+
+</mapper>

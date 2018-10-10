@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.khsh.etl.mapper.SysJobLogDao">
+
+	<sql id="SqlWhere">
+		<where>
+			1=1
+			<if test="id!=null ">and id=#{id} </if>
+			<if test="jobId!=null and jobId!='' ">and job_id=#{jobId} </if>
+			<if test="jobName!=null and jobName!='' ">and job_name=#{jobName} </if>
+			<if test="jobStarttime!=null and jobStarttime!='' ">and job_starttime=#{jobStarttime} </if>
+			<if test="jobEndtime!=null and jobEndtime!='' ">and job_endtime=#{jobEndtime} </if>
+			<if test="jobCosttime!=null ">and job_costtime=#{jobCosttime} </if>
+			<if test="jobState!=null and jobState!='' ">and job_state=#{jobState} </if>
+			<if test="jobResult!=null ">and job_result=#{jobResult} </if>
+			<if test="logType!=null ">and log_type=#{logType} </if>
+			<if test="logLevel!=null ">and log_level=#{logLevel} </if>
+			<if test="logSubject!=null and logSubject!='' ">and log_subject=#{logSubject} </if>
+			<if test="logPath!=null and logPath!='' ">and log_path=#{logPath} </if>
+			<if test="modifyTime!=null and modifyTime!='' ">and modify_time=#{modifyTime} </if>
+			<if test="modifyUser!=null and modifyUser!='' ">and modify_user=#{modifyUser} </if>
+			<if test="ext!=null and ext!='' ">and ext=#{ext} </if>
+			<if test="ext1!=null and ext1!='' ">and ext1=#{ext1} </if>
+			<if test="ext2!=null and ext2!='' ">and ext2=#{ext2} </if>
+		</where>
+	</sql>
+	<sql id="SqlWherePK">
+		<where>
+			1=1
+			<if test="id!=null ">and id=#{id} </if>
+		</where>
+	</sql>
+	<sql id="SqlSet">
+		<set>
+			<if test="id!=null "> id=#{id}, </if>
+			<if test="jobId!=null and jobId!='' "> job_id=#{jobId}, </if>
+			<if test="jobName!=null and jobName!='' "> job_name=#{jobName}, </if>
+			<if test="jobStarttime!=null and jobStarttime!='' "> job_starttime=#{jobStarttime}, </if>
+			<if test="jobEndtime!=null and jobEndtime!='' "> job_endtime=#{jobEndtime}, </if>
+			<if test="jobCosttime!=null "> job_costtime=#{jobCosttime}, </if>
+			<if test="jobState!=null and jobState!='' "> job_state=#{jobState}, </if>
+			<if test="jobResult!=null "> job_result=#{jobResult}, </if>
+			<if test="logType!=null "> log_type=#{logType}, </if>
+			<if test="logLevel!=null "> log_level=#{logLevel}, </if>
+			<if test="logSubject!=null and logSubject!='' "> log_subject=#{logSubject}, </if>
+			<if test="logPath!=null and logPath!='' "> log_path=#{logPath}, </if>
+			<if test="modifyTime!=null and modifyTime!='' "> modify_time=#{modifyTime}, </if>
+			<if test="modifyUser!=null and modifyUser!='' "> modify_user=#{modifyUser}, </if>
+			<if test="ext!=null and ext!='' "> ext=#{ext}, </if>
+			<if test="ext1!=null and ext1!='' "> ext1=#{ext1}, </if>
+			<if test="ext2!=null and ext2!='' "> ext2=#{ext2}, </if>
+		</set>
+	</sql>
+
+
+	<insert  id="insertAutoKey" parameterType="com.khsh.etl.model.SysJobLogModel" useGeneratedKeys="true" keyProperty="id" >
+		 INSERT INTO sys_job_log (
+ 			job_id, job_name, job_starttime, job_endtime, 
+ 			job_costtime, job_state, job_result, log_type, log_level, 
+ 			log_subject, log_path, modify_time, modify_user, ext, 
+ 			ext1, ext2 ) 	 VALUES ( 
+ 			#{jobId}, #{jobName}, #{jobStarttime}, #{jobEndtime}, 
+ 			#{jobCosttime}, #{jobState}, #{jobResult}, #{logType}, #{logLevel}, 
+ 			#{logSubject}, #{logPath}, #{modifyTime}, #{modifyUser}, #{ext}, 
+ 			#{ext1}, #{ext2} ) 
+	</insert>
+
+	<insert  id="insertSingle" parameterType="com.khsh.etl.model.SysJobLogModel" useGeneratedKeys="true" keyProperty="id" >
+		 INSERT INTO sys_job_log (
+ 			job_id, job_name, job_starttime, job_endtime, 
+ 			job_costtime, job_state, job_result, log_type, log_level, 
+ 			log_subject, log_path, modify_time, modify_user, ext, 
+ 			ext1, ext2,  id ) 
+		 VALUES( 
+ 			#{jobId}, #{jobName}, #{jobStarttime}, #{jobEndtime}, 
+ 			#{jobCosttime}, #{jobState}, #{jobResult}, #{logType}, #{logLevel}, 
+ 			#{logSubject}, #{logPath}, #{modifyTime}, #{modifyUser}, #{ext}, 
+ 			#{ext1}, #{ext2},  #{id} ) 
+	</insert>
+
+	<delete  id="delete" parameterType="com.khsh.etl.model.SysJobLogModel" >
+		 DELETE FROM sys_job_log
+		 <include refid="SqlWhere"></include> 
+	</delete>
+
+	<update  id="update" parameterType="com.khsh.etl.model.SysJobLogModel" >
+		 UPDATE sys_job_log
+		 <include refid="SqlSet"></include> 
+		 <include refid="SqlWherePK"></include> 
+	</update>
+
+	<select  id="findByPK" parameterType="com.khsh.etl.model.SysJobLogModel" resultType="com.khsh.etl.model.SysJobLogModel" >
+		 SELECT * FROM sys_job_log
+		 <include refid="SqlWhere"></include> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryByCond" parameterType="com.khsh.etl.model.SysJobLogModel" resultType="com.khsh.etl.model.SysJobLogModel" >
+		 SELECT * FROM sys_job_log
+		 <include refid="SqlWhere"></include> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryTree" parameterType="com.khsh.etl.model.SysJobLogModel" resultType="com.khsh.etl.model.SysJobLogModel" >
+		 SELECT * FROM sys_job_log
+		 <include refid="SqlWhere"></include> 
+		 <if test=" extSQL !=null "> ${extSQL} </if> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryByPage" parameterType="com.khsh.etl.model.SysJobLogModel" resultType="com.khsh.etl.model.SysJobLogModel" >
+		 SELECT * FROM sys_job_log
+		 <include refid="SqlWhere"></include> 
+		 <if test="extSQL!=null "> ${extSQL} </if> 
+	</select>
+
+	<select  id="findMaxId" parameterType="com.khsh.etl.model.SysJobLogModel" resultType="int" >
+		 SELECT max(id) FROM sys_job_log
+		 <include refid="SqlWhere"></include> 
+	</select>
+
+</mapper>

@@ -1,0 +1,99 @@
+server:
+  port: 8099
+  servlet:
+    context-path: /etl
+    session:
+      cookie:
+        max-age: 60000s
+      timeout: 1800s
+
+  tomcat:
+    #accept-count: 
+    max-connections: 500
+    max-threads: 1000
+
+management:
+  security:
+    #是否启用安全
+    enabled: false
+  server:
+    port: 8088
+    servlet:
+      context-path: /monitor
+endpoints:
+  shutdown:
+    #开启shutdown端点
+    enabled: true
+
+spring:
+  session:
+    ## store-type redis     -----redis缓存session，
+    #  store-type: none     -----表示不用缓存sesion数据信息
+    store-type: none
+  redis:
+    ## Redis数据库索(默认为0)
+    database: 3
+    host: 192.168.10.182
+    port: 6379
+    # Redis服务器连接密码（默认为空）
+    password: 
+    # 连接超时时间（毫秒）
+    timeout: 3600s
+    # 连接池最大连接数（使用负值表示没有限制）
+    jedis: 
+      pool: 
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 8
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1s
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        #连接池中的最小空闲连接
+        min-idle: 0
+        #jedis超时 
+      shutdown-timeout: 100
+  #数据源配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://192.168.0.127:3306/etl_kettle?characterEncoding=utf8&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+   # 下面为连接池的补充设置，应用到上面所有数据源中
+    # 初始化大小，最小，最大
+    initialSize: 3
+    minIdle: 2
+    maxActive: 5
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 1800000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 100
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,slf4j
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    # 合并多个DruidDataSource的监控数据
+    useGlobalDataSourceStat: true
+    
+# 下面为连接池的补充设置，应用到上面所有数据源中
+
+# mybatis配置
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/**/*.xml
+  
+# 基础的comm-web包配置信息
+comm-web:
+  tokenAuth: false
+  sessionIgnore: true
+  # 忽略的拦截url地址信息,用‘,’分割
+  ignoreURL: /login,/logout,.*/comm-web/version

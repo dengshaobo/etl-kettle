@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.khsh.etl.mapper.EtlKettleRepositoryDao">
+
+	<sql id="SqlWhere">
+		<where>
+			1=1
+			<if test="id!=null ">and id=#{id} </if>
+			<if test="ktlJobUuid!=null and ktlJobUuid!='' ">and ktl_job_uuid=#{ktlJobUuid} </if>
+			<if test="ktlJobType!=null and ktlJobType!='' ">and ktl_job_type=#{ktlJobType} </if>
+			<if test="ktlJobName!=null and ktlJobName!='' ">and ktl_job_name=#{ktlJobName} </if>
+			<if test="repType!=null and repType!='' ">and rep_type=#{repType} </if>
+			<if test="repPath!=null and repPath!='' ">and rep_path=#{repPath} </if>
+			<if test="ktlParamValue!=null and ktlParamValue!='' ">and ktl_param_value=#{ktlParamValue} </if>
+			<if test="status!=null and status!='' ">and status=#{status} </if>
+			<if test="remark!=null and remark!='' ">and remark=#{remark} </if>
+			<if test="modifyTime!=null and modifyTime!='' ">and modify_time=#{modifyTime} </if>
+			<if test="modifyUser!=null and modifyUser!='' ">and modify_user=#{modifyUser} </if>
+			<if test="ext!=null and ext!='' ">and ext=#{ext} </if>
+			<if test="ext1!=null and ext1!='' ">and ext1=#{ext1} </if>
+			<if test="ext2!=null and ext2!='' ">and ext2=#{ext2} </if>
+		</where>
+	</sql>
+	<sql id="SqlWherePK">
+		<where>
+			1=1
+			<if test="id!=null ">and id=#{id} </if>
+		</where>
+	</sql>
+	<sql id="SqlSet">
+		<set>
+			<if test="id!=null "> id=#{id}, </if>
+			<if test="ktlJobUuid!=null and ktlJobUuid!='' "> ktl_job_uuid=#{ktlJobUuid}, </if>
+			<if test="ktlJobType!=null and ktlJobType!='' "> ktl_job_type=#{ktlJobType}, </if>
+			<if test="ktlJobName!=null and ktlJobName!='' "> ktl_job_name=#{ktlJobName}, </if>
+			<if test="repType!=null and repType!='' "> rep_type=#{repType}, </if>
+			<if test="repPath!=null and repPath!='' "> rep_path=#{repPath}, </if>
+			<if test="ktlParamValue!=null and ktlParamValue!='' "> ktl_param_value=#{ktlParamValue}, </if>
+			<if test="status!=null and status!='' "> status=#{status}, </if>
+			<if test="remark!=null and remark!='' "> remark=#{remark}, </if>
+			<if test="modifyTime!=null and modifyTime!='' "> modify_time=#{modifyTime}, </if>
+			<if test="modifyUser!=null and modifyUser!='' "> modify_user=#{modifyUser}, </if>
+			<if test="ext!=null and ext!='' "> ext=#{ext}, </if>
+			<if test="ext1!=null and ext1!='' "> ext1=#{ext1}, </if>
+			<if test="ext2!=null and ext2!='' "> ext2=#{ext2}, </if>
+		</set>
+	</sql>
+
+
+	<insert  id="insertAutoKey" parameterType="com.khsh.etl.model.EtlKettleRepositoryModel" useGeneratedKeys="true" keyProperty="id" >
+		 INSERT INTO etl_kettle_repository (
+ 			ktl_job_uuid, ktl_job_type, ktl_job_name, rep_type, 
+ 			rep_path, ktl_param_value, status, remark, modify_time, 
+ 			modify_user, ext, ext1, ext2 ) 	 VALUES ( 
+ 			#{ktlJobUuid}, #{ktlJobType}, #{ktlJobName}, #{repType}, 
+ 			#{repPath}, #{ktlParamValue}, #{status}, #{remark}, #{modifyTime}, 
+ 			#{modifyUser}, #{ext}, #{ext1}, #{ext2} ) 
+	</insert>
+
+	<insert  id="insertSingle" parameterType="com.khsh.etl.model.EtlKettleRepositoryModel" useGeneratedKeys="true" keyProperty="id" >
+		 INSERT INTO etl_kettle_repository (
+ 			ktl_job_uuid, ktl_job_type, ktl_job_name, rep_type, 
+ 			rep_path, ktl_param_value, status, remark, modify_time, 
+ 			modify_user, ext, ext1, ext2,  id ) 
+		 VALUES( 
+ 			#{ktlJobUuid}, #{ktlJobType}, #{ktlJobName}, #{repType}, 
+ 			#{repPath}, #{ktlParamValue}, #{status}, #{remark}, #{modifyTime}, 
+ 			#{modifyUser}, #{ext}, #{ext1}, #{ext2},  #{id} ) 
+	</insert>
+
+	<delete  id="delete" parameterType="com.khsh.etl.model.EtlKettleRepositoryModel" >
+		 DELETE FROM etl_kettle_repository
+		 <include refid="SqlWhere"></include> 
+	</delete>
+
+	<update  id="update" parameterType="com.khsh.etl.model.EtlKettleRepositoryModel" >
+		 UPDATE etl_kettle_repository
+		 <include refid="SqlSet"></include> 
+		 <include refid="SqlWherePK"></include> 
+	</update>
+
+	<select  id="findByPK" parameterType="com.khsh.etl.model.EtlKettleRepositoryModel" resultType="com.khsh.etl.model.EtlKettleRepositoryModel" >
+		 SELECT * FROM etl_kettle_repository
+		 <include refid="SqlWhere"></include> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryByCond" parameterType="com.khsh.etl.model.EtlKettleRepositoryModel" resultType="com.khsh.etl.model.EtlKettleRepositoryModel" >
+		 SELECT * FROM etl_kettle_repository
+		 <include refid="SqlWhere"></include> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryTree" parameterType="com.khsh.etl.model.EtlKettleRepositoryModel" resultType="com.khsh.etl.model.EtlKettleRepositoryModel" >
+		 SELECT * FROM etl_kettle_repository
+		 <include refid="SqlWhere"></include> 
+		 <if test=" extSQL !=null "> ${extSQL} </if> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryByPage" parameterType="com.khsh.etl.model.EtlKettleRepositoryModel" resultType="com.khsh.etl.model.EtlKettleRepositoryModel" >
+		 SELECT * FROM etl_kettle_repository
+		 <include refid="SqlWhere"></include> 
+		 <if test="extSQL!=null "> ${extSQL} </if> 
+	</select>
+
+	<select  id="findMaxId" parameterType="com.khsh.etl.model.EtlKettleRepositoryModel" resultType="int" >
+		 SELECT max(id) FROM etl_kettle_repository
+		 <include refid="SqlWhere"></include> 
+	</select>
+
+    <!--查询kettle任务数据-->
+    <select  id="queryKettleJobParam" parameterType="com.khsh.etl.vo.bus.KettleJobParamVO" resultType="com.khsh.etl.vo.bus.KettleJobParamVO" >
+        SELECT P.job_id, P.job_name, P.param_name, P.param_type,
+        R.ktl_job_uuid, R.ktl_job_type, R.ktl_job_name, R.rep_type, R.rep_path, R.ktl_param_value
+        FROM sys_job_param P, etl_kettle_repository R
+        where P.param_value = R.ktl_job_uuid
+        <if test="jobId!=null and jobId!='' "> AND P.job_id=#{jobId} </if>
+        <if test="jobName!=null and jobName!='' "> AND P.job_name=#{jobName}  </if>
+        <if test="paramName!=null and paramName!='' "> AND P.param_name=#{paramName} </if>
+        <if test="paramType!=null and paramType!='' "> ADN P.param_type=#{paramType}  </if>
+    </select>
+
+
+</mapper>

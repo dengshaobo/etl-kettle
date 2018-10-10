@@ -1,0 +1,4 @@
+rootProject.name = 'etl-kettle'
+include 'etl-data-builder'
+include 'etl-kettle-kit'
+

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration  scan="true" scanPeriod="60000" debug="true">
+    <contextName>logback</contextName>
+
+    <!--配置变量-->
+    <!--文件路径前缀-->
+    <property name="LOG_HOME" value="/opt/ALogs" />
+    <property name="encoder_pattern" value="%red(%d{MMdd HH:mm:ss.SSS}) %highlight(%-5level) %green([%thread] [%c{0}:%L]) - %cyan(%msg%n)"/>
+    <property name="maxHistory" value="60"/>
+    <property name="maxFileSize" value="100MB"/>
+
+
+    <!--输出到控制台-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${encoder_pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--输出到文件-->
+    <appender name="file_all" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--大小和时间满足后都会重新生成文件 -->
+       <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">  
+	        <fileNamePattern>${LOG_HOME}/ETL.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+	        <maxHistory>${maxHistory}</maxHistory>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+       </rollingPolicy>
+        <encoder>
+            <pattern>${encoder_pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--只接受ERROR级别的日志-->
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/ETL.%d{yyyy-MM-dd}.%i.err</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${encoder_pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+
+    <!-- 总日志级别配置，包括日志输出文件引用 -->
+    <root level="info">
+        <appender-ref ref="console" />
+        <appender-ref ref="file_all" />
+        <appender-ref ref="FILE_ERROR" />
+    </root>
+
+
+
+    <!--<appender name="druidSqlRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--<fileNamePattern>${LOG_HOME}/druid-monitor.%d.%i.log</fileNamePattern>-->
+            <!--<maxHistory>${maxHistory}</maxHistory>-->
+            <!--<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+                <!--<maxFileSize>${maxFileSize}</maxFileSize>-->
+            <!--</timeBasedFileNamingAndTriggeringPolicy>-->
+        <!--</rollingPolicy>-->
+        <!--<encoder>-->
+            <!--<pattern>${encoder_pattern}</pattern>-->
+            <!--<charset>UTF-8</charset>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
+
+    <!--&lt;!&ndash;配置druid的SQL日志输出&ndash;&gt;-->
+    <!--<logger name="druid.sql.Statement" level="DEBUG" additivity="false">-->
+        <!--<appender-ref ref="druidSqlRollingFile" />-->
+    <!--</logger>-->
+
+
+</configuration>
