@@ -1,6 +1,10 @@
 package com.khsh.etl.service.impl;
 
 import java.sql.SQLException;
+
+import com.ejet.comm.utils.StringUtils;
+import com.ejet.comm.utils.UuidUtils;
+import com.ejet.comm.utils.time.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
@@ -38,7 +42,10 @@ public class EtlKettleRepositoryServiceImpl implements IEtlKettleRepositoryServi
  		 mDao.delete(model);
  	}  
 
-	public EtlKettleRepositoryModel  findByPK(EtlKettleRepositoryModel model) throws CoBusinessException { 
+	public EtlKettleRepositoryModel  findByPK(EtlKettleRepositoryModel model) throws CoBusinessException {
+        if(model.getId()==null && model.getUuid()==null) {
+            throw new CoBusinessException(ExceptionCode.PARAM_MISSING_ID);
+        }
  		 return mDao.findByPK(model);
  	}  
 
@@ -54,13 +61,23 @@ public class EtlKettleRepositoryServiceImpl implements IEtlKettleRepositoryServi
  		 return page;
  	}  
 
-	public int insertSingle(EtlKettleRepositoryModel model) throws CoBusinessException { 
- 		// 获取最大id。保证连续性
- 		Integer maxId = mDao.findMaxId(null);
- 		maxId = maxId==null? 1 : maxId+1;
- 		model.setId(maxId);
- 		mDao.insertSingle(model);
- 		return maxId;
+	public int insertSingle(EtlKettleRepositoryModel model) throws CoBusinessException {
+	    if(StringUtils.isBlank(model.getKtlJobType())
+            || StringUtils.isBlank(model.getRepType())
+                || StringUtils.isBlank(model.getRepPath())) {
+            throw new CoBusinessException(ExceptionCode.PARAM_MISSING_ID);
+        }
+
+	    if( !model.getKtlJobType().equalsIgnoreCase("KTR") && !model.getKtlJobType().equalsIgnoreCase("KJB") ) {
+            throw new CoBusinessException("");
+        }
+
+        if(model.getUuid()==null) {
+            model.setUuid(UuidUtils.get32UUID());
+        }
+        model.setModifyTime(TimeUtils.getCurrentFullTime());
+        int maxId = mDao.insertAutoKey(model);
+        return maxId;
  	}
 
     /**

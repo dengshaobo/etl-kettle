@@ -25,7 +25,10 @@ public interface EtlDatabaseBuildExtDao {
 
 	public abstract List<EtlDatabaseBuildExtModel>  queryTree(EtlDatabaseBuildExtModel obj) throws CoBusinessException; 
 
-	public abstract Integer  findMaxId(EtlDatabaseBuildExtModel obj) throws CoBusinessException; 
+	public abstract Integer  findMaxId(EtlDatabaseBuildExtModel obj) throws CoBusinessException;
 
 
+    public abstract void deleteByBuildUUid(EtlDatabaseBuildExtModel obj) throws CoBusinessException;
+
+    public abstract void insertBatch(List<EtlDatabaseBuildExtModel> list) throws CoBusinessException;
 }

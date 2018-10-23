@@ -6,9 +6,15 @@ import com.ejet.comm.Param;
 import com.ejet.comm.Result;
 import com.ejet.comm.base.CoBaseController;
 import com.ejet.comm.exception.CoBusinessException;
+import com.ejet.comm.exception.ExceptionCode;
+import com.ejet.comm.quartz.JobSchedulerManager;
+import com.ejet.comm.quartz.SysJobScheduleBase;
+import com.khsh.etl.model.EtlKettleRepositoryModel;
 import com.khsh.etl.model.SysJobScheduleModel;
 import com.khsh.etl.service.impl.SysJobScheduleServiceImpl;
+import com.khsh.etl.vo.EtlKettleRepositoryVO;
 import com.khsh.etl.vo.SysJobScheduleVO;
+import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +49,20 @@ public class SysJobScheduleController extends CoBaseController {
 		}
 		return rs;
 	}
+
+    @ResponseBody
+    @RequestMapping(value="/find-by-pk")
+    public Result findByPK(@RequestBody(required=true) SysJobScheduleVO model) {
+        Result rs = new Result();
+        try {
+            SysJobScheduleModel result = mService.findByPK(model);
+            rs = new Result(result);
+        }catch (CoBusinessException e) {
+            log.error("", e);
+            rs = new Result(e.getCode(), e);
+        }
+        return rs;
+    }
 
 
 	@ResponseBody
@@ -108,6 +128,74 @@ public class SysJobScheduleController extends CoBaseController {
 		}
 		return rs;
 	}
+
+
+    /**
+     * 查询运行中的任务
+     * @param model
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="/get-running-job")
+    public Result getRunningJob(@RequestBody(required=false) SysJobScheduleVO model) {
+        Result rs = new Result();
+        try{
+            List<SysJobScheduleBase> page = JobSchedulerManager.getInstance().getRunningScheduleJob();
+            rs = new Result(page);
+        }catch (SchedulerException e) {
+            log.error("", e);
+            rs = new Result(ExceptionCode.SYS_ERROR, e);
+        }catch (Exception e) {
+            log.error("", e);
+            rs = new Result("", e);
+        }
+        return rs;
+    }
+
+
+    /**
+     * 暂停任务
+     * @param model
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="/pause-job")
+    public Result pauseJob(@RequestBody(required=true) SysJobScheduleVO model) {
+        Result rs = new Result();
+        try{
+            mService.pauseJob(model);
+        }catch (CoBusinessException e) {
+            log.error("", e);
+            rs = new Result(e);
+        }catch (Exception e) {
+            log.error("", e);
+            rs = new Result("", e);
+        }
+        return rs;
+    }
+
+
+    /**
+     * 启动任务
+     * @param model
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="/start-job")
+    public Result startJob(@RequestBody(required=true) SysJobScheduleVO model) {
+        Result rs = new Result();
+        try{
+            mService.startJob(model);
+        }catch (CoBusinessException e) {
+            log.error("", e);
+            rs = new Result(e);
+        }catch (Exception e) {
+            log.error("", e);
+            rs = new Result("", e);
+        }
+        return rs;
+    }
+
 
 
 }

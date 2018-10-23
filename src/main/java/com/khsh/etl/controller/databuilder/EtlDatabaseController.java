@@ -40,6 +40,19 @@ public class EtlDatabaseController extends CoBaseController {
 		return rs;
 	}
 
+    @ResponseBody
+    @RequestMapping(value="/find-by-pk")
+    public Result findByPK(@RequestBody(required=true)EtlDatabaseVO model) {
+        Result rs = new Result();
+        try {
+            EtlDatabaseModel result = mService.findByPK(model);
+            rs = new Result(result);
+        }catch (CoBusinessException e) {
+            log.error("", e);
+            rs = new Result(e.getCode(), e);
+        }
+        return rs;
+    }
 
 	@ResponseBody
 	@RequestMapping(value="/delete")

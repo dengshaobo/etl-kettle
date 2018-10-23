@@ -33,7 +33,7 @@ public class EtlDatabaseServiceImpl implements IEtlDatabaseService {
  		if(model.getId()==null && model.getUuid()==null) {
  			throw new CoBusinessException(ExceptionCode.PARAM_MISSING_ID);
  		}
- 		 mDao.update(model);
+ 		mDao.update(model);
  	}  
 
 	public void delete(EtlDatabaseModel model) throws CoBusinessException {
@@ -43,7 +43,10 @@ public class EtlDatabaseServiceImpl implements IEtlDatabaseService {
  		 mDao.delete(model);
  	}  
 
-	public EtlDatabaseModel  findByPK(EtlDatabaseModel model) throws CoBusinessException { 
+	public EtlDatabaseModel findByPK(EtlDatabaseModel model) throws CoBusinessException {
+        if(model.getId()==null && model.getUuid()==null) {
+            throw new CoBusinessException(ExceptionCode.PARAM_MISSING_ID);
+        }
  		 return mDao.findByPK(model);
  	}  
 

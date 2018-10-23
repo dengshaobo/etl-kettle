@@ -4,10 +4,10 @@ import com.ejet.comm.utils.StringUtils;
 import com.khsh.etl.databuilder.db.DbColumnConverter;
 import com.khsh.etl.databuilder.db.DbContext;
 import com.khsh.etl.databuilder.db.DbHelper;
+import com.khsh.etl.databuilder.db.dialect.DbTypeEnum;
 import com.khsh.etl.databuilder.db.meta.DbColumnMeta;
 import com.khsh.etl.databuilder.db.meta.DbMetaHelper;
 import com.khsh.etl.databuilder.db.meta.DbTableMeta;
-import com.khsh.etl.databuilder.db.dialect.DbTypeEnum;
 import com.khsh.etl.databuilder.vo.TableVO;
 
 import java.util.ArrayList;

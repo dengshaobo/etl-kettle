@@ -19,7 +19,9 @@ public class EtlDatabaseModel extends CoBaseVO {
  	private String dbPassword;
 	/**  状态, 1: 正常，0：禁用  */ 
  	private Integer status;
-	/**  备注,描述  */ 
+	/**  库类型标识, 1: 目标库，0：源库  */
+ 	private Integer fromTo;
+	/**  备注,描述  */
  	private String remark;
 	/**  修改时间  */ 
  	private String modifyTime;
@@ -144,5 +146,11 @@ public class EtlDatabaseModel extends CoBaseVO {
 		return ext2;
 	}
 
+    public Integer getFromTo() {
+        return fromTo;
+    }
 
+    public void setFromTo(Integer fromTo) {
+        this.fromTo = fromTo;
+    }
 }

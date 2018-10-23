@@ -1,7 +1,9 @@
 package com.khsh.etl.controller;
 
 import com.ejet.comm.exception.CoBusinessException;
+import com.khsh.etl.model.EtlDatabaseModel;
 import com.khsh.etl.model.EtlKettleRepositoryModel;
+import com.khsh.etl.vo.EtlDatabaseVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +42,22 @@ public class EtlKettleRepositoryController extends CoBaseController {
 		return rs;
 	}
 
+    @ResponseBody
+    @RequestMapping(value="/find-by-pk")
+    public Result findByPK(@RequestBody(required=true) EtlKettleRepositoryVO model) {
+        Result rs = new Result();
+        try {
+            EtlKettleRepositoryModel result = mService.findByPK(model);
+            rs = new Result(result);
+        }catch (CoBusinessException e) {
+            log.error("", e);
+            rs = new Result(e.getCode(), e);
+        }
+        return rs;
+    }
 
-	@ResponseBody
+
+    @ResponseBody
 	@RequestMapping(value="/delete")
 	public Result delete(@RequestBody(required=true)EtlKettleRepositoryVO model) {
 		Result rs = new Result();

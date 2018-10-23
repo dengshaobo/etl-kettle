@@ -21,13 +21,14 @@
 			<if test="ext2!=null and ext2!='' ">and ext2=#{ext2} </if>
 		</where>
 	</sql>
-	<sql id="SqlWherePK">
-		<where>
-			1=1
-			<if test="id!=null ">and id=#{id} </if>
-            <if test="uuid!=null and uuid!='' ">and uuid=#{uuid} </if>
-		</where>
-	</sql>
+
+    <sql id="SqlWherePK">
+        <where>
+            1=1
+            <if test="id!=null ">and id=#{id} </if>
+        </where>
+    </sql>
+
 	<sql id="SqlSet">
 		<set>
 			<if test="id!=null "> id=#{id}, </if>
@@ -75,8 +76,8 @@
 
 	<update  id="update" parameterType="com.khsh.etl.model.EtlDatabaseBuildExtModel" >
 		 UPDATE etl_database_build_ext
-		 <include refid="SqlSet"></include> 
-		 <include refid="SqlWherePK"></include> 
+        <include refid="SqlSet"></include>
+        <include refid="SqlWherePK"></include>
 	</update>
 
 	<select  id="findByPK" parameterType="com.khsh.etl.model.EtlDatabaseBuildExtModel" resultType="com.khsh.etl.model.EtlDatabaseBuildExtModel" >
@@ -108,5 +109,40 @@
 		 SELECT max(id) FROM etl_database_build_ext
 		 <include refid="SqlWhere"></include> 
 	</select>
+
+
+
+    <delete  id="deleteByBuildUUid" parameterType="com.khsh.etl.model.EtlDatabaseBuildExtModel" >
+        DELETE FROM etl_database_build_ext
+        <where>
+            <if test="id!=null ">and id=#{id} </if>
+            <if test="buildUuid!=null and buildUuid!='' ">and build_uuid=#{buildUuid} </if>
+            <if test="columnName!=null and columnName!='' ">and column_name=#{columnName} </if>
+            <if test="columnType!=null and columnType!='' ">and column_type=#{columnType} </if>
+            <if test="columnLength!=null ">and column_length=#{columnLength} </if>
+            <if test="columnScale!=null ">and column_scale=#{columnScale} </if>
+            <if test="status!=null and status!='' ">and status=#{status} </if>
+            <if test="remark!=null and remark!='' ">and remark=#{remark} </if>
+            <if test="modifyTime!=null and modifyTime!='' ">and modify_time=#{modifyTime} </if>
+            <if test="modifyUser!=null and modifyUser!='' ">and modify_user=#{modifyUser} </if>
+            <if test="ext!=null and ext!='' ">and ext=#{ext} </if>
+            <if test="ext1!=null and ext1!='' ">and ext1=#{ext1} </if>
+            <if test="ext2!=null and ext2!='' ">and ext2=#{ext2} </if>
+        </where>
+    </delete>
+
+
+    <insert  id="insertBatch" parameterType="java.util.List" >
+		 INSERT INTO etl_database_build_ext (
+ 			build_uuid, column_name, column_type, column_length,
+ 			column_scale, status, remark, modify_time, modify_user,
+ 			ext, ext1, ext2)
+		 VALUES
+		 <foreach collection="list" item="item" index="index" separator="," >
+             ( #{item.buildUuid}, #{item.columnName}, #{item.columnType}, #{item.columnLength},
+             #{item.columnScale}, #{item.status}, #{item.remark}, #{item.modifyTime}, #{item.modifyUser},
+             #{item.ext}, #{item.ext1}, #{item.ext2})
+         </foreach>
+	</insert>
 
 </mapper>

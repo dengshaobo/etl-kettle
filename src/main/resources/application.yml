@@ -1,7 +1,7 @@
 server:
   port: 8099
   servlet:
-    context-path: /etl
+    context-path: /bss
     session:
       cookie:
         max-age: 60000s
@@ -30,32 +30,10 @@ spring:
     ## store-type redis     -----redis缓存session，
     #  store-type: none     -----表示不用缓存sesion数据信息
     store-type: none
-  redis:
-    ## Redis数据库索(默认为0)
-    database: 3
-    host: 192.168.10.182
-    port: 6379
-    # Redis服务器连接密码（默认为空）
-    password: 
-    # 连接超时时间（毫秒）
-    timeout: 3600s
-    # 连接池最大连接数（使用负值表示没有限制）
-    jedis: 
-      pool: 
-        # 连接池最大连接数（使用负值表示没有限制）
-        max-active: 8
-        # 连接池最大阻塞等待时间（使用负值表示没有限制）
-        max-wait: -1s
-        # 连接池中的最大空闲连接
-        max-idle: 8
-        #连接池中的最小空闲连接
-        min-idle: 0
-        #jedis超时 
-      shutdown-timeout: 100
   #数据源配置
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://192.168.0.127:3306/etl_kettle?characterEncoding=utf8&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/etl_kettle?useSSL=false&serverTimezone=UTC
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -84,16 +62,41 @@ spring:
     # 合并多个DruidDataSource的监控数据
     useGlobalDataSourceStat: true
     
-# 下面为连接池的补充设置，应用到上面所有数据源中
+
+  ### ===========================   redis   ===============================
+  redis:
+    cluster:
+      # （普通集群，不使用则不用开启）在群集中执行命令时要遵循的最大重定向数目。
+      #max-redirects:
+      #nodes: 192.168.0.127:7000,192.168.0.127:7001,192.168.0.127:7002
+      nodes: 127.0.0.1:7000,127.0.0.1:7001,127.0.0.1:7002
+
+    password:
+    lettuce:
+      pool:
+        max-idle: 8
+        max-active: 8
+        min-idle: 0
+        max-wait: -1ms
 
 # mybatis配置
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/**/*.xml
-  
+
 # 基础的comm-web包配置信息
+### ===========================   comm-web   ===============================
 comm-web:
-  tokenAuth: false
+  tokenAuth: true
   sessionIgnore: true
-  # 忽略的拦截url地址信息,用‘,’分割
-  ignoreURL: /login,/logout,.*/comm-web/version
+  # 忽略的拦截url地址信息(session过滤器),用‘,’分割
+  sessionIgnoreURL: /login,/logout,.*/comm-web/version
+
+# 用户登录模块
+### ===========================   user-info   ===============================
+bss-user-info:
+  authTokenKey: Authorization
+  # token 超时时间
+  authTokenTimeout: 1800
+  # token 忽略地址
+  authTokenIgnoreURL: /sys-account/login,/sys-account/logout

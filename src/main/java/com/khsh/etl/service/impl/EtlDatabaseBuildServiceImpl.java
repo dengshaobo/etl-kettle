@@ -3,6 +3,8 @@ package com.khsh.etl.service.impl;
 
 import com.ejet.comm.utils.UuidUtils;
 import com.ejet.comm.utils.time.TimeUtils;
+import com.khsh.etl.model.EtlDatabaseBuildExtModel;
+import com.khsh.etl.vo.EtlDatabaseBuildVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
@@ -25,6 +27,9 @@ public class EtlDatabaseBuildServiceImpl implements IEtlDatabaseBuildService {
 	@Autowired
 	private EtlDatabaseBuildDao mDao;
 
+    @Autowired
+    private EtlDatabaseBuildExtServiceImpl extService;
+
 	public void insertAutoKey(EtlDatabaseBuildModel model) throws CoBusinessException { 
  		 mDao.insertAutoKey(model);
  	}  
@@ -40,8 +45,11 @@ public class EtlDatabaseBuildServiceImpl implements IEtlDatabaseBuildService {
  		 mDao.delete(model);
  	}  
 
-	public EtlDatabaseBuildModel  findByPK(EtlDatabaseBuildModel model) throws CoBusinessException { 
- 		 return mDao.findByPK(model);
+	public EtlDatabaseBuildModel  findByPK(EtlDatabaseBuildModel model) throws CoBusinessException {
+        if(model.getId()==null && model.getUuid()==null) {
+            throw new CoBusinessException(ExceptionCode.PARAM_MISSING_ID);
+        }
+ 		return mDao.findByPK(model);
  	}  
 
 	public List<EtlDatabaseBuildModel>  queryByCond(EtlDatabaseBuildModel model) throws CoBusinessException { 
@@ -64,6 +72,32 @@ public class EtlDatabaseBuildServiceImpl implements IEtlDatabaseBuildService {
         int maxId = mDao.insertAutoKey(model);
         return maxId;
  	}
+
+
+    /**
+     * 添加同步数据规则
+     * @param model
+     * @return
+     * @throws CoBusinessException
+     */
+    public int addDbBuild(EtlDatabaseBuildVO model) throws CoBusinessException {
+        //先入库
+        String uuid = UuidUtils.get32UUID();
+        model.setUuid(uuid);
+        int maxId = insertSingle(model);
+
+        if(model.getDbextlist()!=null) {
+            for (EtlDatabaseBuildExtModel ext: model.getDbextlist()) {
+                ext.setBuildUuid(uuid);
+            }
+            extService.insertBatch(model.getDbextlist());
+        }
+        return maxId;
+    }
+
+
+
+
 
 
 }

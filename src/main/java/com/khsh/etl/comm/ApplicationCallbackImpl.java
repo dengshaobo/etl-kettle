@@ -105,14 +105,14 @@ public class ApplicationCallbackImpl implements IApplicationBootCallback {
 
             List<EtlKettleRepositoryModel> list = kettleRepositoryService.queryByCond(null);
             if(list!=null) {
-                log.info("======   加载kettle资源   ======" + list.size());
+                log.info("======   加载kettle资源,个数{}   ======", list.size());
                 for (EtlKettleRepositoryModel item : list) {
                     try {
                         if(ConstantKettle.REP_TYPE_DB.equals(item.getRepType().toUpperCase())) { //文件方式不需要加载
                             KettleRepositoryLoader.loadRepository(item.getKtlJobType(), item.getRepPath());
                         }
                     } catch (KettleException e) {
-                        log.error("加载kettle资源失败??? kettleType:{}, 路径:",  item.getKtlJobType(), item.getRepPath() , e);
+                        log.error("加载kettle资源失败??? uuid: {}, kettleType:{}, 路径:{}",  item.getUuid(), item.getKtlJobType(), item.getRepPath() , e);
                     }
                 }
             }

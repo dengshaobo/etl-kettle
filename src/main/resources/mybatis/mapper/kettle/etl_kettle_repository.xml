@@ -7,9 +7,9 @@
 		<where>
 			1=1
 			<if test="id!=null ">and id=#{id} </if>
-			<if test="ktlJobUuid!=null and ktlJobUuid!='' ">and ktl_job_uuid=#{ktlJobUuid} </if>
+			<if test="uuid!=null and uuid!='' ">and uuid=#{uuid} </if>
 			<if test="ktlJobType!=null and ktlJobType!='' ">and ktl_job_type=#{ktlJobType} </if>
-			<if test="ktlJobName!=null and ktlJobName!='' ">and ktl_job_name=#{ktlJobName} </if>
+			<if test="ktlJobName!=null and ktlJobName!='' ">and ktl_job_name like CONCAT('%', #{ktlJobName}, '%') </if>
 			<if test="repType!=null and repType!='' ">and rep_type=#{repType} </if>
 			<if test="repPath!=null and repPath!='' ">and rep_path=#{repPath} </if>
 			<if test="ktlParamValue!=null and ktlParamValue!='' ">and ktl_param_value=#{ktlParamValue} </if>
@@ -26,12 +26,13 @@
 		<where>
 			1=1
 			<if test="id!=null ">and id=#{id} </if>
+            <if test="uuid!=null and uuid!='' ">and uuid=#{uuid} </if>
 		</where>
 	</sql>
 	<sql id="SqlSet">
 		<set>
 			<if test="id!=null "> id=#{id}, </if>
-			<if test="ktlJobUuid!=null and ktlJobUuid!='' "> ktl_job_uuid=#{ktlJobUuid}, </if>
+			<if test="uuid!=null and uuid!='' "> uuid=#{uuid}, </if>
 			<if test="ktlJobType!=null and ktlJobType!='' "> ktl_job_type=#{ktlJobType}, </if>
 			<if test="ktlJobName!=null and ktlJobName!='' "> ktl_job_name=#{ktlJobName}, </if>
 			<if test="repType!=null and repType!='' "> rep_type=#{repType}, </if>
@@ -50,21 +51,21 @@
 
 	<insert  id="insertAutoKey" parameterType="com.khsh.etl.model.EtlKettleRepositoryModel" useGeneratedKeys="true" keyProperty="id" >
 		 INSERT INTO etl_kettle_repository (
- 			ktl_job_uuid, ktl_job_type, ktl_job_name, rep_type, 
+ 			uuid, ktl_job_type, ktl_job_name, rep_type, 
  			rep_path, ktl_param_value, status, remark, modify_time, 
  			modify_user, ext, ext1, ext2 ) 	 VALUES ( 
- 			#{ktlJobUuid}, #{ktlJobType}, #{ktlJobName}, #{repType}, 
+ 			#{uuid}, #{ktlJobType}, #{ktlJobName}, #{repType}, 
  			#{repPath}, #{ktlParamValue}, #{status}, #{remark}, #{modifyTime}, 
  			#{modifyUser}, #{ext}, #{ext1}, #{ext2} ) 
 	</insert>
 
 	<insert  id="insertSingle" parameterType="com.khsh.etl.model.EtlKettleRepositoryModel" useGeneratedKeys="true" keyProperty="id" >
 		 INSERT INTO etl_kettle_repository (
- 			ktl_job_uuid, ktl_job_type, ktl_job_name, rep_type, 
+ 			uuid, ktl_job_type, ktl_job_name, rep_type, 
  			rep_path, ktl_param_value, status, remark, modify_time, 
  			modify_user, ext, ext1, ext2,  id ) 
 		 VALUES( 
- 			#{ktlJobUuid}, #{ktlJobType}, #{ktlJobName}, #{repType}, 
+ 			#{uuid}, #{ktlJobType}, #{ktlJobName}, #{repType}, 
  			#{repPath}, #{ktlParamValue}, #{status}, #{remark}, #{modifyTime}, 
  			#{modifyUser}, #{ext}, #{ext1}, #{ext2},  #{id} ) 
 	</insert>
@@ -82,7 +83,7 @@
 
 	<select  id="findByPK" parameterType="com.khsh.etl.model.EtlKettleRepositoryModel" resultType="com.khsh.etl.model.EtlKettleRepositoryModel" >
 		 SELECT * FROM etl_kettle_repository
-		 <include refid="SqlWhere"></include> 
+		 <include refid="SqlWherePK"></include>
 		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
 	</select>
 
@@ -113,14 +114,13 @@
     <!--查询kettle任务数据-->
     <select  id="queryKettleJobParam" parameterType="com.khsh.etl.vo.bus.KettleJobParamVO" resultType="com.khsh.etl.vo.bus.KettleJobParamVO" >
         SELECT P.job_id, P.job_name, P.param_name, P.param_type,
-        R.ktl_job_uuid, R.ktl_job_type, R.ktl_job_name, R.rep_type, R.rep_path, R.ktl_param_value
+        R.uuid, R.ktl_job_type, R.ktl_job_name, R.rep_type, R.rep_path, R.ktl_param_value
         FROM sys_job_param P, etl_kettle_repository R
-        where P.param_value = R.ktl_job_uuid
+        where P.param_value = R.uuid
         <if test="jobId!=null and jobId!='' "> AND P.job_id=#{jobId} </if>
         <if test="jobName!=null and jobName!='' "> AND P.job_name=#{jobName}  </if>
         <if test="paramName!=null and paramName!='' "> AND P.param_name=#{paramName} </if>
         <if test="paramType!=null and paramType!='' "> ADN P.param_type=#{paramType}  </if>
     </select>
-
 
 </mapper>

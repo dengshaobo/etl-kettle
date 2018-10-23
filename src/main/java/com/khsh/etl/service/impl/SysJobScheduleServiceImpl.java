@@ -1,6 +1,11 @@
 package com.khsh.etl.service.impl;
 
 import java.sql.SQLException;
+
+import com.ejet.comm.quartz.JobSchedulerManager;
+import com.ejet.comm.utils.time.TimeUtils;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
@@ -28,7 +33,7 @@ public class SysJobScheduleServiceImpl implements ISysJobScheduleService {
  	}  
 
 	public void update(SysJobScheduleModel model) throws CoBusinessException { 
- 		if(model.getId()==null) { 
+ 		if(model.getId()==null && model.getJobId()==null) {
  			throw new CoBusinessException(ExceptionCode.PARAM_MISSING_ID);
  		}
  		 mDao.update(model);
@@ -38,7 +43,10 @@ public class SysJobScheduleServiceImpl implements ISysJobScheduleService {
  		 mDao.delete(model);
  	}  
 
-	public SysJobScheduleModel  findByPK(SysJobScheduleModel model) throws CoBusinessException { 
+	public SysJobScheduleModel  findByPK(SysJobScheduleModel model) throws CoBusinessException {
+        if(model.getId()==null && model.getJobId()==null) {
+            throw new CoBusinessException(ExceptionCode.PARAM_MISSING_ID);
+        }
  		 return mDao.findByPK(model);
  	}  
 
@@ -62,6 +70,69 @@ public class SysJobScheduleServiceImpl implements ISysJobScheduleService {
  		mDao.insertSingle(model);
  		return maxId;
  	}
+
+
+
+    /**
+     * 暂停、停止任务
+     *
+     * @param model
+     * @throws CoBusinessException
+     */
+    public void pauseJob(SysJobScheduleModel model) throws CoBusinessException {
+        // TODO Auto-generated method stub
+        try {
+            SysJobScheduleModel result = findByPK(model);
+            if(result==null || result.getStatus()==null || result.getIsTask()==null) {
+                return;
+            }
+            if(result.getIsTask()== JobSchedulerManager.IS_TASK_PERIOD) {
+                Trigger.TriggerState state = JobSchedulerManager.getInstance().pauseScheduleJob(result);
+                result.setJobState(state.toString());
+            } else {
+                JobSchedulerManager.getInstance().pauseJob(result);
+                result.setJobState("PAUSED");
+            }
+            String time = TimeUtils.getCurrentShortTime();
+            result.setLastDo(time);
+            result.setModifyTime(time);
+            mDao.update(result);
+        } catch (SchedulerException e) {
+            throw new CoBusinessException(ExceptionCode.SYS_ERROR, e);
+        }
+    }
+
+
+    /**
+     * 恢复、启动任务
+     *
+     * @param model
+     * @throws CoBusinessException
+     */
+    public void startJob(SysJobScheduleModel model) throws CoBusinessException {
+        // TODO Auto-generated method stub
+        SysJobScheduleModel result = findByPK(model);
+        try {
+            if(result==null || result.getStatus()==null || result.getIsTask()==null) {
+                return;
+            }
+            if(result.getIsTask()==JobSchedulerManager.IS_TASK_PERIOD) {
+                Trigger.TriggerState state = JobSchedulerManager.getInstance().resumeScheduleJob(result);
+                result.setJobState(state.toString());
+            } else {
+                result.setJobState("NORMAL");
+                JobSchedulerManager.getInstance().resumeJob(result);
+            }
+            String time = TimeUtils.getCurrentShortTime();
+            result.setLastDo(time);
+            result.setModifyTime(time);
+            mDao.update(result);
+        } catch (SchedulerException e) {
+            throw new CoBusinessException(ExceptionCode.SYS_ERROR, e);
+        }
+    }
+
+
 
 
 }

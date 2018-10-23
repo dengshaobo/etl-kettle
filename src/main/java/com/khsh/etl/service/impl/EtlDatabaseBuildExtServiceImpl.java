@@ -34,7 +34,10 @@ public class EtlDatabaseBuildExtServiceImpl implements IEtlDatabaseBuildExtServi
  		 mDao.update(model);
  	}  
 
-	public void delete(EtlDatabaseBuildExtModel model) throws CoBusinessException { 
+	public void delete(EtlDatabaseBuildExtModel model) throws CoBusinessException {
+        if(model.getId()==null) {
+            throw new CoBusinessException(ExceptionCode.PARAM_MISSING_ID);
+        }
  		 mDao.delete(model);
  	}  
 
@@ -62,6 +65,26 @@ public class EtlDatabaseBuildExtServiceImpl implements IEtlDatabaseBuildExtServi
  		mDao.insertSingle(model);
  		return maxId;
  	}
+
+    /**
+     * 批量插入
+     *
+     * @param list
+     */
+ 	public void insertBatch(List<EtlDatabaseBuildExtModel> list) throws CoBusinessException {
+        mDao.insertBatch(list);
+    }
+
+    /**
+     * 通过uuid等信息删除
+     *
+     * @param model
+     * @throws CoBusinessException
+     */
+    public void deleteByBuildUUid(EtlDatabaseBuildExtModel model) throws CoBusinessException {
+        mDao.deleteByBuildUUid(model);
+    }
+
 
 
 }

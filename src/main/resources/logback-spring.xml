@@ -52,7 +52,7 @@
 
 
     <!-- 总日志级别配置，包括日志输出文件引用 -->
-    <root level="info">
+    <root level="debug">
         <appender-ref ref="console" />
         <appender-ref ref="file_all" />
         <appender-ref ref="FILE_ERROR" />

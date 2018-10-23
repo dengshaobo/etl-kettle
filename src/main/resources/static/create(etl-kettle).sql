@@ -6,7 +6,7 @@
 DROP TABLE IF EXISTS `etl_kettle_repository`;
 CREATE TABLE `etl_kettle_repository` (
        `id`          		  int(11) 			  NOT NULL 					        AUTO_INCREMENT ,
-       `ktl_job_uuid`  	  varchar(64)			NOT NULL  					      COMMENT 'kette作业id' ,
+       `uuid`  	  varchar(64)			NOT NULL  					      COMMENT '标识uuid' ,
        `ktl_job_type`  		varchar(32)			NOT NULL  					      COMMENT 'kette作业类型: KJB\KTR' ,
        `ktl_job_name`  		varchar(64)			NOT NULL  					      COMMENT '作业名称',
        `rep_type`  		    varchar(32)			NOT NULL  					      COMMENT '资源类型: DB\FILE',
@@ -20,7 +20,7 @@ CREATE TABLE `etl_kettle_repository` (
        `ext1`  				    varchar(100)		NULL DEFAULT NULL     		COMMENT '预留字段',
        `ext2`  				    varchar(100)		NULL DEFAULT NULL     		COMMENT '预留字段',
        PRIMARY KEY (`id`),
-       UNIQUE INDEX `ktl_job_uuid` (`ktl_job_uuid`) USING BTREE
+       UNIQUE INDEX `uuid` (`uuid`) USING BTREE
 )  comment='kettle作业配置表'
  ENGINE=InnoDB
  DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci;

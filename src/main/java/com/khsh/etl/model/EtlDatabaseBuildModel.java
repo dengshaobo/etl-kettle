@@ -15,6 +15,8 @@ public class EtlDatabaseBuildModel extends CoBaseVO {
  	private String databaseUuidTo;
 	/**  目标表前缀  */ 
  	private String tablePrefix;
+	/**  表存在时是否删除表, 1: 删除，0：保留  */ 
+ 	private Integer isDrop;
 	/**  状态, 1: 正常，0：禁用  */ 
  	private Integer status;
 	/**  备注,描述  */ 
@@ -78,6 +80,14 @@ public class EtlDatabaseBuildModel extends CoBaseVO {
 
 	public String getTablePrefix(){
 		return tablePrefix;
+	}
+
+	public void setIsDrop(Integer isDrop) {
+		this.isDrop=isDrop;
+	} 
+
+	public Integer getIsDrop(){
+		return isDrop;
 	}
 
 	public void setStatus(Integer status) {

@@ -4,10 +4,9 @@ import com.ejet.comm.db.CoDbConfig;
 import com.ejet.comm.db.CoDbFactory;
 import com.ejet.comm.utils.io.IOUtils;
 import com.khsh.etl.databuilder.db.DbContext;
-import com.khsh.etl.databuilder.db.meta.DbDatabaseMeta;
-import com.khsh.etl.databuilder.db.meta.DbMetaHelper;
-import com.khsh.etl.databuilder.db.meta.DbTableMeta;
 import com.khsh.etl.databuilder.db.dialect.DbTypeEnum;
+import com.khsh.etl.databuilder.db.meta.DbDatabaseMeta;
+import com.khsh.etl.databuilder.db.meta.DbTableMeta;
 import com.khsh.etl.databuilder.utils.DbUtils;
 
 import java.sql.Connection;

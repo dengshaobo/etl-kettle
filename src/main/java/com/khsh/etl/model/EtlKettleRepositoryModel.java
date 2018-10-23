@@ -6,7 +6,7 @@ public class EtlKettleRepositoryModel extends CoBaseVO {
 	/**    */ 
  	private Integer id;
 	/**  kette作业id  */ 
- 	private String ktlJobUuid;
+ 	private String uuid;
 	/**  kette作业类型: KJBKTR  */ 
  	private String ktlJobType;
 	/**  作业名称  */ 
@@ -40,12 +40,12 @@ public class EtlKettleRepositoryModel extends CoBaseVO {
 		return id;
 	}
 
-	public void setKtlJobUuid(String ktlJobUuid) {
-		this.ktlJobUuid=ktlJobUuid;
+	public void setUuid(String uuid) {
+		this.uuid=uuid;
 	} 
 
-	public String getKtlJobUuid(){
-		return ktlJobUuid;
+	public String getUuid(){
+		return uuid;
 	}
 
 	public void setKtlJobType(String ktlJobType) {

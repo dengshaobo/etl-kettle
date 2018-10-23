@@ -2,6 +2,8 @@ package com.khsh.etl;
 
 import com.ejet.CommWebApplication;
 import com.ejet.CommWebQuartzApplication;
+import com.ejet.bss.userinfo.UserInfoApplication;
+import com.ejet.comm.CommWebRedisApplication;
 import com.ejet.context.CoApplicationContext;
 import com.khsh.etl.comm.ApplicationCallbackImpl;
 import org.slf4j.Logger;
@@ -41,6 +43,8 @@ public class EtlKettleApplication extends SpringBootServletInitializer {
         list.add(EtlKettleApplication.class);       //本项目
         list.add(CommWebApplication.class);         //基础项目
         list.add(CommWebQuartzApplication.class);   //调度项目
+        list.add(CommWebRedisApplication.class);    //redis项目
+        list.add(UserInfoApplication.class);    //userinfo项目
 
         SpringApplication.run(list.toArray(new Class[list.size()]), args);
 

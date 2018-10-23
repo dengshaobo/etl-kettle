@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ejet.bss.userinfo.mapper.SysUserEavDao">
+
+	<sql id="SqlWhere">
+		<where>
+			1=1
+			<if test="id!=null ">and id=#{id} </if>
+			<if test="userId!=null and userId!='' ">and user_id=#{userId} </if>
+			<if test="dictKey!=null and dictKey!='' ">and dict_key=#{dictKey} </if>
+			<if test="dictCode!=null and dictCode!='' ">and dict_code=#{dictCode} </if>
+			<if test="dictValue!=null and dictValue!='' ">and dict_value=#{dictValue} </if>
+			<if test="status!=null and status!='' ">and status=#{status} </if>
+			<if test="remark!=null and remark!='' ">and remark=#{remark} </if>
+			<if test="modifyTime!=null and modifyTime!='' ">and modify_time=#{modifyTime} </if>
+			<if test="modifyUser!=null and modifyUser!='' ">and modify_user=#{modifyUser} </if>
+			<if test="ext!=null and ext!='' ">and ext=#{ext} </if>
+		</where>
+	</sql>
+	<sql id="SqlWherePK">
+		<where>
+			1=1
+			<if test="id!=null ">and id=#{id} </if>
+		</where>
+	</sql>
+	<sql id="SqlSet">
+		<set>
+			<if test="id!=null "> id=#{id}, </if>
+			<if test="userId!=null and userId!='' "> user_id=#{userId}, </if>
+			<if test="dictKey!=null and dictKey!='' "> dict_key=#{dictKey}, </if>
+			<if test="dictCode!=null and dictCode!='' "> dict_code=#{dictCode}, </if>
+			<if test="dictValue!=null and dictValue!='' "> dict_value=#{dictValue}, </if>
+			<if test="status!=null and status!='' "> status=#{status}, </if>
+			<if test="remark!=null and remark!='' "> remark=#{remark}, </if>
+			<if test="modifyTime!=null and modifyTime!='' "> modify_time=#{modifyTime}, </if>
+			<if test="modifyUser!=null and modifyUser!='' "> modify_user=#{modifyUser}, </if>
+			<if test="ext!=null and ext!='' "> ext=#{ext}, </if>
+		</set>
+	</sql>
+
+
+	<insert  id="insertAutoKey" parameterType="com.ejet.bss.userinfo.model.SysUserEavModel" useGeneratedKeys="true" keyProperty="id" >
+		 INSERT INTO sys_user_eav (
+ 			user_id, dict_key, dict_code, dict_value, 
+ 			status, remark, modify_time, modify_user, ext ) 
+ 				 VALUES ( 
+ 			#{userId}, #{dictKey}, #{dictCode}, #{dictValue}, 
+ 			#{status}, #{remark}, #{modifyTime}, #{modifyUser}, #{ext} ) 
+ 			
+	</insert>
+
+	<insert  id="insertSingle" parameterType="com.ejet.bss.userinfo.model.SysUserEavModel" useGeneratedKeys="true" keyProperty="id" >
+		 INSERT INTO sys_user_eav (
+ 			user_id, dict_key, dict_code, dict_value, 
+ 			status, remark, modify_time, modify_user, ext, 
+ 			 id ) 
+		 VALUES( 
+ 			#{userId}, #{dictKey}, #{dictCode}, #{dictValue}, 
+ 			#{status}, #{remark}, #{modifyTime}, #{modifyUser}, #{ext}, 
+ 			 #{id} ) 
+	</insert>
+
+	<delete  id="delete" parameterType="com.ejet.bss.userinfo.model.SysUserEavModel" >
+		 DELETE FROM sys_user_eav
+		 <include refid="SqlWhere"></include> 
+	</delete>
+
+	<update  id="update" parameterType="com.ejet.bss.userinfo.model.SysUserEavModel" >
+		 UPDATE sys_user_eav
+		 <include refid="SqlSet"></include> 
+		 <include refid="SqlWherePK"></include> 
+	</update>
+
+	<select  id="findByPK" parameterType="com.ejet.bss.userinfo.model.SysUserEavModel" resultType="com.ejet.bss.userinfo.model.SysUserEavModel" >
+		 SELECT * FROM sys_user_eav
+		 <include refid="SqlWhere"></include> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryByCond" parameterType="com.ejet.bss.userinfo.model.SysUserEavModel" resultType="com.ejet.bss.userinfo.model.SysUserEavModel" >
+		 SELECT * FROM sys_user_eav
+		 <include refid="SqlWhere"></include> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryTree" parameterType="com.ejet.bss.userinfo.model.SysUserEavModel" resultType="com.ejet.bss.userinfo.model.SysUserEavModel" >
+		 SELECT * FROM sys_user_eav
+		 <include refid="SqlWhere"></include> 
+		 <if test=" extSQL !=null "> ${extSQL} </if> 
+		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
+	</select>
+
+	<select  id="queryByPage" parameterType="com.ejet.bss.userinfo.model.SysUserEavModel" resultType="com.ejet.bss.userinfo.model.SysUserEavModel" >
+		 SELECT * FROM sys_user_eav
+		 <include refid="SqlWhere"></include> 
+		 <if test="extSQL!=null "> ${extSQL} </if> 
+	</select>
+
+	<select  id="findMaxId" parameterType="com.ejet.bss.userinfo.model.SysUserEavModel" resultType="int" >
+		 SELECT max(id) FROM sys_user_eav
+		 <include refid="SqlWhere"></include> 
+	</select>
+
+</mapper>

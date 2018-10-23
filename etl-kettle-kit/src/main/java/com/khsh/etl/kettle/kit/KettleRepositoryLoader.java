@@ -33,9 +33,9 @@ public class KettleRepositoryLoader {
      */
     public static synchronized AbstractMeta loadRepository(String ktlJobType, String repPath) throws KettleException {
         String key = repPath + "_" + ktlJobType;
-        if(jobs.containsKey(key)) {
-            return jobs.get(key);
-        }
+        // if(jobs.containsKey(key)) {
+        //     return jobs.get(key);
+        // }
         KettleDatabaseRepository repository = KettleFactory.getRepository();
         //根据变量查找到模型所在的目录对象,此步骤很重要。
         String dirName = FileUtils.getFolderName(repPath);

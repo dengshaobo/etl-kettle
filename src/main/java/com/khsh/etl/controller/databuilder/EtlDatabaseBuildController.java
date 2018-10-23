@@ -40,6 +40,20 @@ public class EtlDatabaseBuildController extends CoBaseController {
 		return rs;
 	}
 
+    @ResponseBody
+    @RequestMapping(value="/find-by-pk")
+	public Result findByPK(@RequestBody(required=false)EtlDatabaseBuildVO model) {
+		Result rs = new Result();
+		try {
+			EtlDatabaseBuildModel result = mService.findByPK(model);
+			rs = new Result(result);
+		}catch (CoBusinessException e) {
+			log.error("", e);
+			rs = new Result(e.getCode(), e);
+		}
+		return rs;
+	}
+
 
 	@ResponseBody
 	@RequestMapping(value="/delete")
@@ -103,8 +117,18 @@ public class EtlDatabaseBuildController extends CoBaseController {
 	}
 
 
-
-
+    @ResponseBody
+    @RequestMapping(value="/add-db-build")
+    public Result addDbBuild(@RequestBody(required=true)EtlDatabaseBuildVO model) {
+        Result rs = new Result();
+        try{
+            mService.addDbBuild(model);
+        }catch (CoBusinessException e) {
+            log.error("", e);
+            rs = new Result(e.getCode(), e);
+        }
+        return rs;
+    }
 
 
 }

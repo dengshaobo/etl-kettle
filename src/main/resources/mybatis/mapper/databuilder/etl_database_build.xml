@@ -8,11 +8,12 @@
 			1=1
 			<if test="id!=null ">and id=#{id} </if>
 			<if test="uuid!=null and uuid!='' ">and uuid=#{uuid} </if>
-			<if test="name!=null and name!='' ">and name=#{name} </if>
+			<if test="name!=null and name!='' ">and name like CONCAT('%', #{name}, '%') </if>
 			<if test="databaseUuidFrom!=null and databaseUuidFrom!='' ">and database_uuid_from=#{databaseUuidFrom} </if>
 			<if test="databaseUuidTo!=null and databaseUuidTo!='' ">and database_uuid_to=#{databaseUuidTo} </if>
 			<if test="tablePrefix!=null and tablePrefix!='' ">and table_prefix=#{tablePrefix} </if>
-			<if test="status!=null and status!='' ">and status=#{status} </if>
+			<if test="isDrop!=null  ">and is_drop=#{isDrop} </if>
+			<if test="status!=null ">and status=#{status} </if>
 			<if test="remark!=null and remark!='' ">and remark=#{remark} </if>
 			<if test="modifyTime!=null and modifyTime!='' ">and modify_time=#{modifyTime} </if>
 			<if test="modifyUser!=null and modifyUser!='' ">and modify_user=#{modifyUser} </if>
@@ -37,7 +38,8 @@
 			<if test="databaseUuidFrom!=null and databaseUuidFrom!='' "> database_uuid_from=#{databaseUuidFrom}, </if>
 			<if test="databaseUuidTo!=null and databaseUuidTo!='' "> database_uuid_to=#{databaseUuidTo}, </if>
 			<if test="tablePrefix!=null and tablePrefix!='' "> table_prefix=#{tablePrefix}, </if>
-			<if test="status!=null and status!='' "> status=#{status}, </if>
+			<if test="isDrop!=null "> is_drop=#{isDrop}, </if>
+			<if test="status!=null "> status=#{status}, </if>
 			<if test="remark!=null and remark!='' "> remark=#{remark}, </if>
 			<if test="modifyTime!=null and modifyTime!='' "> modify_time=#{modifyTime}, </if>
 			<if test="modifyUser!=null and modifyUser!='' "> modify_user=#{modifyUser}, </if>
@@ -52,22 +54,26 @@
 	<insert  id="insertAutoKey" parameterType="com.khsh.etl.model.EtlDatabaseBuildModel" useGeneratedKeys="true" keyProperty="id" >
 		 INSERT INTO etl_database_build (
  			uuid, name, database_uuid_from, database_uuid_to, 
- 			table_prefix, status, remark, modify_time, modify_user, 
- 			ext, ext1, ext2, ignore_tables ) 	 VALUES ( 
+ 			table_prefix, is_drop, status, remark, modify_time, 
+ 			modify_user, ext, ext1, ext2, ignore_tables ) 
+ 				 VALUES ( 
  			#{uuid}, #{name}, #{databaseUuidFrom}, #{databaseUuidTo}, 
- 			#{tablePrefix}, #{status}, #{remark}, #{modifyTime}, #{modifyUser}, 
- 			#{ext}, #{ext1}, #{ext2}, #{ignoreTables} ) 
+ 			#{tablePrefix}, #{isDrop}, #{status}, #{remark}, #{modifyTime}, 
+ 			#{modifyUser}, #{ext}, #{ext1}, #{ext2}, #{ignoreTables} ) 
+ 			
 	</insert>
 
 	<insert  id="insertSingle" parameterType="com.khsh.etl.model.EtlDatabaseBuildModel" useGeneratedKeys="true" keyProperty="id" >
 		 INSERT INTO etl_database_build (
  			uuid, name, database_uuid_from, database_uuid_to, 
- 			table_prefix, status, remark, modify_time, modify_user, 
- 			ext, ext1, ext2, ignore_tables,  id ) 
+ 			table_prefix, is_drop, status, remark, modify_time, 
+ 			modify_user, ext, ext1, ext2, ignore_tables, 
+ 			 id ) 
 		 VALUES( 
  			#{uuid}, #{name}, #{databaseUuidFrom}, #{databaseUuidTo}, 
- 			#{tablePrefix}, #{status}, #{remark}, #{modifyTime}, #{modifyUser}, 
- 			#{ext}, #{ext1}, #{ext2}, #{ignoreTables},  #{id} ) 
+ 			#{tablePrefix}, #{isDrop}, #{status}, #{remark}, #{modifyTime}, 
+ 			#{modifyUser}, #{ext}, #{ext1}, #{ext2}, #{ignoreTables}, 
+ 			 #{id} ) 
 	</insert>
 
 	<delete  id="delete" parameterType="com.khsh.etl.model.EtlDatabaseBuildModel" >
@@ -83,7 +89,7 @@
 
 	<select  id="findByPK" parameterType="com.khsh.etl.model.EtlDatabaseBuildModel" resultType="com.khsh.etl.model.EtlDatabaseBuildModel" >
 		 SELECT * FROM etl_database_build
-		 <include refid="SqlWhere"></include> 
+		 <include refid="SqlWherePK"></include>
 		 <if test=" orderCond !=null ">  order by ${orderCond} </if> 
 	</select>
 
@@ -110,5 +116,8 @@
 		 SELECT max(id) FROM etl_database_build
 		 <include refid="SqlWhere"></include> 
 	</select>
+
+
+
 
 </mapper>
